@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 
 using Xamarin.Forms;
+using SQLite;
 
 namespace CNIT355_Final_Project
 {
 	public class LoginPage : ContentPage
 	{
-		public LoginPage ()
+        protected SQLiteConnection myDatabase;
+        public LoginPage ()
 		{
             Label homeLabel = new Label
             {
@@ -21,8 +23,7 @@ namespace CNIT355_Final_Project
 
             Entry nameEntry = new Entry
             {
-                Text = "Enter Username" //will only be artist or manager nothing too complex
-                
+                Placeholder = "Enter Username" //will only be artist or manager nothing too complex                
             };
 
             Entry passEntry = new Entry
@@ -33,6 +34,10 @@ namespace CNIT355_Final_Project
             Button loginButton = new Button
             {
                 Text = "Login"
+            };
+            loginButton.Clicked += (sendernav, args) =>
+            {
+                myDatabase.Query<User>("SELECT Username FROM User WHERE Username = " + nameEntry.Text);
             };
 
             Button accountButton = new Button
