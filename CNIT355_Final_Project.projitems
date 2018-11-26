@@ -25,6 +25,11 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Manager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ManagerInfoPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NewArtist.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TabPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)User.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Venue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VenueInfoPage.cs" />
   </ItemGroup>
 </Project>
