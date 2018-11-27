@@ -1,0 +1,24 @@
+11/21/2018
+--Changed Artist/ArtistDOB to YearsActive in case of groups
+--Met in the middle for ArtistName length, set to 30
+--Retained ArtistBio(1566 seems reasonable for length) in order for a short description to be entered. Length Example:
+
+Born in Huntsville, Alabama in 1991 and raised on the South Side of Chicago, MC/poet Mick Jenkins (whose real first name is Jayson) made an impact in the early 2010s' Chicago hip-hop scene with his socially conscious, intelligent lyrics and tough yet unforced delivery over acid jazz-influenced backing tracks. Affiliated with hip-hop crew Free Nation, Jenkins began releasing online mixtapes in 2012, starting with The Mickstape in January and followed by The Pursuit of HappyNess: The Story of Mickalascage in August. Trees & Truths, an ambitious 17-track mixtape filled with biblical imagery and demonstrating Jenkins' remarkable growth as a lyricist, appeared in April of 2013 and significantly raised his profile within the Chicago rap community, and later in the year Jenkins collaborated with Chance the Rapper and Vic Mensa on a single called "Cross Roads." Jenkins received national attention for The Water[s], his 2014 mixtape that featured guest appearances by Statik Selektah and Joey Bada$$. This led to a support slot on a fall 2014 tour with Method Man, Redman, and Cypress Hill's B Real, followed by tours with Kirk Knight, Joey Bada$$, and STWO in 2015. Jenkins signed to Cinematic Music Group in 2015, releasing an EP titled Wave[s] in August while working on his official full-length debut, The Healing Component. That LP arrived in late 2016 and debuted at number nine on the R&B/hip-hop chart. His sophomore full-length, Pieces of a Man, arrived in 2018 and included the single "Smoking Song," featuring Toronto instrumental group BadBadNotGood. ~ Paul Simpson, Rovi
+
+--Didn't implement ArtistGender due to irrelevance/possibility of groups 
+
+11/24/2018
+--Added controls to AccountCreation.cs for new managers/artists/venues. SQL commands need implemented
+
+11/25/2018
+--Considering combining NewArtist into AccountCreation. ArtistID entry commented out in NewArtist, ArtistID is auto-incremented on creation.
+--Updated Artist, Venue, and Manager classes with new column info
+--??Create Table for payment info for all 3 user types??
+--Converted ManagerName to ManagerFirst & ManagerLast
+--Reformatted controls on AccountCreation.cs
+
+11/26/2018
+--Added new controls to VenueInfoPage, ArtistInfoPage
+--Changed names/values in VenueInfoPage/ArtistInfoPage to reflect changes in their respective tables
+--Removed ArtistManaged from Manager/ManagerInfoPage, added ManagedBy to Artist/ArtistInfoPage
+--Modified AccountCreation layout

@@ -1,0 +1,37 @@
+--TABLES--
+
+--USER
+	-MANAGER
+	-ARTIST
+	-VENUE
+--PAYMENT
+
+
+PAGES
+--Login
+--Account_Creation
+--User_Profile
+	-SEARCH
+		-ARTIST
+			-Pay_Info
+			-Bookings
+			-Edit Bio/Photos/Contact?
+		-MANAGER
+			-Pay_Info
+			-Bookings
+			-Managed_Clients
+				-Add_Client
+		-VENUE
+			-Bookings
+			-Invoices/Payment
+--View_Artist
+	-Bio
+	-Photos
+	-Current_Shows
+	-Contact_Info/Social_Media
+--View_Venue
+	-Address
+	-Description
+	-Current_Shows
+	-Contact_Info
+--View_Manager?
