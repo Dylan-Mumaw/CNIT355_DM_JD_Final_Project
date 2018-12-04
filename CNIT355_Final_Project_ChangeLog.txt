@@ -22,3 +22,12 @@ Born in Huntsville, Alabama in 1991 and raised on the South Side of Chicago, MC/
 --Changed names/values in VenueInfoPage/ArtistInfoPage to reflect changes in their respective tables
 --Removed ArtistManaged from Manager/ManagerInfoPage, added ManagedBy to Artist/ArtistInfoPage
 --Modified AccountCreation layout
+
+12/1/2018
+--Removed Manager firstEntry/lastEntry
+--Added manStack
+--Added AccountCreation type validation and stack display
+--Need to implement ADD account
+
+12/2/2018
+--Consolidated pay information into one Stack
