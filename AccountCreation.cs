@@ -6,22 +6,33 @@ using System.Text;
 using Xamarin.Forms;
 using SQLite;
 
-namespace CNIT355_Final_Project
+namespace FpV3
 {
-	public class AccountCreation : ContentPage
-	{
+    public class AccountCreation : ContentPage
+    {
+        
         protected SQLiteConnection myDatabase;
         StackLayout currentStack;
+
         public AccountCreation()
-		{
+        {
             myDatabase = DependencyService.Get<IDatabase>().ConnectToDB();
+
             //NEW USER INFO ENTRY
+            Label userIDLabel = new Label
+            {
+                Text = "Enter ID: "
+            };
+            Entry userIDEntry = new Entry
+            {
+
+            };
             Label firstLabel = new Label
             {
                 Text = "First Name: "
             };
             Entry firstEntry = new Entry
-            {                
+            {
             };
 
             Label lastLabel = new Label
@@ -70,6 +81,14 @@ namespace CNIT355_Final_Project
             }
 
             //NEW VENUE INFO - IF VENUE MAKE THIS VISIBLE
+            Label venIDLabel = new Label
+            {
+                Text = "Enter venue ID: "
+            };
+            Entry venIDEntry = new Entry
+            {
+
+            };
             Label venNameLabel = new Label
             {
                 Text = "Venue Name: "
@@ -158,6 +177,14 @@ namespace CNIT355_Final_Project
             //END VENUE
 
             //NEW ARTIST INFO - IF ARTIST MAKE THIS VISIBLE
+            Label artIDLabel = new Label
+            {
+                Text = "Enter artist ID: "
+            };
+            Entry artIDEntry = new Entry
+            {
+            
+            };
             Label artNameLabel = new Label
             {
                 Text = "Artist/Group Name: "
@@ -198,7 +225,6 @@ namespace CNIT355_Final_Project
             {
             };
 
-            //State DropDownList
             Label artCityLabel = new Label
             {
                 Text = "City: "
@@ -241,7 +267,13 @@ namespace CNIT355_Final_Project
             //END ARTIST
 
             //NEW MANAGER INFO - IF MANAGER MAKE THIS VISIBLE
-            //State DropDownList
+            Label manIDLabel = new Label
+            {
+                Text = "ID: "
+            };
+            Entry manIDEntry = new Entry
+            {
+            };
             Label manCityLabel = new Label
             {
                 Text = "City: "
@@ -312,26 +344,28 @@ namespace CNIT355_Final_Project
             {
                 Text = "Create Account"
             };
-            
 
-            StackLayout payStack = new StackLayout
-            {
-                Children =
-                {
-                    billLabel,
-                    billEntry,
-                    bankLabel,
-                    bankEntry,
-                    routingLabel,
-                    routingEntry,
-                    accLabel,
-                    accEntry
-                }
-            };
+
+            //StackLayout payStack = new StackLayout
+            //{
+            //    Children =
+            //    {
+            //        billLabel,
+            //        billEntry,
+            //        bankLabel,
+            //        bankEntry,
+            //        routingLabel,
+            //        routingEntry,
+            //        accLabel,
+            //        accEntry
+            //    }
+            //};
             StackLayout userStack = new StackLayout
             {
                 Children =
                 {
+                    userIDLabel,
+                    userIDEntry,
                     firstLabel,
                     firstEntry,
                     lastLabel,
@@ -346,6 +380,8 @@ namespace CNIT355_Final_Project
             {
                 Children =
                 {
+                    venIDLabel,
+                    venIDEntry,
                     venNameLabel,
                     venNameEntry,
                     venCityLabel,
@@ -355,7 +391,7 @@ namespace CNIT355_Final_Project
                     venAddEntry,
                     venZIPLabel,
                     venZIPEntry,
-                    payStack,
+                    //payStack,
                     createButton
                 }
             };
@@ -363,16 +399,18 @@ namespace CNIT355_Final_Project
             {
                 Children =
                 {
+                    artIDLabel,
+                    artIDEntry,
                     artNameLabel,
                     artNameEntry,
                     artManLabel,
-                    artManEntry,
-                    artGenLabel,
-                    artGenEntry,
-                    artBioLabel,
-                    artBioEntry,
-                    artYearsLabel,
-                    artYearsEntry,
+                    //artManEntry,
+                    //artGenLabel,
+                    //artGenEntry,
+                    //artBioLabel,
+                    //artBioEntry,
+                    //artYearsLabel,
+                    //artYearsEntry,
                     statePicker,
                     artCityLabel,
                     artCityEntry,
@@ -384,7 +422,7 @@ namespace CNIT355_Final_Project
                     artEmailEntry,
                     artPhoneLabel,
                     artPhoneEntry,
-                    payStack,
+                    //payStack,
                     createButton
                 }
             };
@@ -392,30 +430,30 @@ namespace CNIT355_Final_Project
             {
                 Children =
                 {
-                    statePicker,
+                    manIDLabel,
+                    manIDEntry,
                     manCityLabel,
                     manCityEntry,
+                    statePicker,
                     manAddLabel,
                     manAddEntry,
                     manZIPLabel,
                     manZIPEntry,
                     manEmailLabel,
                     manEmailEntry,
-                    payStack,
+                    //payStack,
                     createButton
                 }
             };
-            
+
 
             StackLayout mainStack = new StackLayout
             {
                 Children =
                 {
-                    userStack,                   
+                    userStack,
                 }
             };
-
-            //var newUser = new User { FirstName = firstEntry.Text.ToString(), LastName = lastEntry.Text.ToString(), Username = userEntry.Text.ToString(), Type = typePicker.SelectedItem.ToString() };
             newUserButton.Clicked += (sender, args) =>
             {
                 Validate();
@@ -438,17 +476,33 @@ namespace CNIT355_Final_Project
                     if (typePicker.SelectedItem.ToString() == "Manager")
                     {
                         currentStack = manStack;
-                        mainStack.Children.Add(manStack);
+                        mainStack.Children.Add(manStack);   
                     }
                     if (typePicker.SelectedItem.ToString() == "Artist")
                     {
                         currentStack = artStack;
                         mainStack.Children.Add(artStack);
                     }
-                    /*myDatabase.Query<User>("INSERT INTO User VALUES" + "(" + "'" + firstEntry.Text + "'" + "'" +
-                                            lastEntry.Text + "'" + "'" + userEntry.Text + "'" + "'" +
-                                            typePicker.SelectedItem.ToString() + "'");*/
-                    DisplayAlert("Thanks!", "Please fill out the following fields", "OK");                    
+               
+                    User newUser = new User();
+
+                    newUser.UserID = Convert.ToInt32(userIDEntry.Text);
+                    newUser.Username = userEntry.Text;
+                    newUser.FirstName = firstEntry.Text;
+                    newUser.LastName = lastEntry.Text;
+                    newUser.Type = typePicker.SelectedItem.ToString();
+                    myDatabase.Insert(newUser);
+
+                    if (newUser.UserID != 0)
+                    {
+                        myDatabase.Update(newUser);
+                    }
+                    else
+                    {
+                        myDatabase.Insert(newUser);
+                    }
+                    DisplayAlert("Insert successful", "Insert Successful", "Ok");
+                    DisplayAlert("Thanks!", "Please fill out the following fields", "OK");
                     return true;
                 }
             };
@@ -457,51 +511,70 @@ namespace CNIT355_Final_Project
             {
                 if (typePicker.SelectedItem.ToString() == "Venue")
                 {
-                    //INSERT SQL
+                    Venue newVenue = new Venue();
+
+                    newVenue.VenueName = venNameEntry.Text;
+                    newVenue.VenueAddress = venAddEntry.Text;
+                    newVenue.VenueCity = venCityEntry.Text;
+                    //newVenue.VenueState = statePicker.SelectedItem.ToString();
+                    newVenue.VenueZIP = venZIPEntry.Text;
+
+                    if (newVenue.VenueID != 0)
+                    {
+                        myDatabase.Update(newVenue);
+                    }
+                    else
+                    {
+                        myDatabase.Insert(newVenue);
+                    }
+
+                    DisplayAlert("Insert", "Insert into venue", "ok");
                 }
-                else if(typePicker.SelectedItem.ToString() == "Artist")
+                else if (typePicker.SelectedItem.ToString() == "Artist")
                 {
-                    //INSERT SQL
+                    Artist newArtist = new Artist();
+
+                    newArtist.ArtistName = artNameEntry.Text;
+                    newArtist.ArtistAddress = artAddEntry.Text;
+                    newArtist.ArtistCity = artCityEntry.Text;
+                    //newArtist.ArtistState = statePicker.SelectedItem.ToString();
+                    newArtist.ArtistZIP = artZIPEntry.Text;
+
+                    if (newArtist.ArtistID != 0)
+                    {
+                        myDatabase.Update(newArtist);
+                    }
+                    else
+                    {
+                        myDatabase.Insert(newArtist);
+                    }
+                    DisplayAlert("Insert", "Inserted into artist", "ok");
                 }
-                else if(typePicker.SelectedItem.ToString() == "Manager")
+                else if (typePicker.SelectedItem.ToString() == "Manager")
                 {
-                    //INSERT SQL
+                    var newManager1 = new Manager();
+
+                    newManager1.ManagerID = Convert.ToInt32(manIDEntry.Text);
+                    newManager1.ManagerName = firstEntry.Text + lastEntry.Text;
+                    newManager1.ManagerAddress = manAddEntry.Text;
+                    newManager1.ManagerCity = manCityEntry.Text;
+                   // newManager1.ManagerState = statePicker.SelectedItem.ToString();
+                    newManager1.ManagerZIP = manZIPEntry.Text;
+                    newManager1.ManagerEmail = manEmailEntry.Text;
+
+
+                    if (newManager1.ManagerID != 0)
+                        {
+                            myDatabase.Update(newManager1);
+                        }
+                        else
+                        {
+                            myDatabase.Insert(newManager1);
+                        }
+                    DisplayAlert("Insert", "Inserted into manager", "ok");
                 }
             };
 
-            /*newVenueButton.Clicked += (sendernav, args) =>
-            {
-
-            };
-
-            bool VenueValidate()
-            {
-                if (venNameEntry == null || venCityEntry == null || venAddEntry == null || venZIPEntry == null)
-                {
-                    DisplayAlert("Alert", "Please fill out all required fields", "OK");
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }*/
-
-            /*typePicker.PropertyChanged += (sender, e) =>
-            {
-                if (typePicker.SelectedItem.ToString() == "Venue")
-                {
-                    mainStack.Children.Add(venStack);
-                }
-                if (typePicker.SelectedItem.ToString() == "Manager")
-                {
-                    //this.Content = manStack;
-                }
-                if (typePicker.SelectedItem.ToString() == "Artist")
-                {
-                    mainStack.Children.Add(artStack);
-                }
-            };*/
             ScrollView scrollView = new ScrollView
             {
                 VerticalOptions = LayoutOptions.CenterAndExpand,
@@ -509,5 +582,5 @@ namespace CNIT355_Final_Project
             };
             this.Content = scrollView;
         }
-	}
+    }
 }
