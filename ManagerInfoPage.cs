@@ -6,44 +6,74 @@ using System.Text;
 using Xamarin.Forms;
 using SQLite;
 
-namespace CNIT355_Final_Project
+namespace FpV3
 {
     public class ManagerInfoPage : ContentPage
     {
         protected SQLiteConnection myDatabase;
+        
         public ManagerInfoPage()
         {
             myDatabase = DependencyService.Get<IDatabase>().ConnectToDB();
-            myDatabase.CreateTable<Manager>();
+           // myDatabase.CreateTable<Manager>(); //maybe move create table functions to different classes. Maybe main class? 
 
-            var manager1 = new Manager { ManagerID = 1, ManagerFirst = "Jerry", ManagerLast = "Cowgill" };
-
+            var manager1 = new Manager { ManagerID = 1, ManagerName = "Jerry Cowgill" };//add rest of manager variables
             myDatabase.Insert(manager1);
 
-            var firstItem = myDatabase.Query<Manager>("SELECT * FROM Manager WHERE ManagerID = 1 ");
-
-            Label managerIDLabel = new Label
+            Entry selectionEntry = new Entry
             {
+                Placeholder = "Enter ID here"
+            };
+            Button selectButton = new Button
+            {
+                Text = "Select Manager",
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Button)),
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Fill
+            };
 
+            Label IDLabel = new Label
+            {
+                FontSize = 30,
             };
             Label nameLabel = new Label
             {
-
+                FontSize = 30,
             };
+            Label addressLabel = new Label
+            {
+                FontSize = 30,
+            };
+            Label emailLabel = new Label
+            {
+                FontSize = 30,
+            };
+
             /*Label artistManagedLabel = new Label
             {
             };*/
 
-            managerIDLabel.Text = firstItem.First().ManagerID.ToString();
-            nameLabel.Text = manager1.ManagerFirst + manager1.ManagerLast;
-            //artistManagedLabel.Text = firstItem.First().ArtistManaged;
+            selectButton.Clicked += (sendernav, args) =>
+            {
+                var item = (myDatabase.Get<Manager>(selectionEntry.Text));
+                IDLabel.Text = item.ManagerID.ToString();
+                nameLabel.Text = item.ManagerName;
+                addressLabel.Text = item.ManagerAddress + " " + item.ManagerCity + " " + item.ManagerZIP;
+                emailLabel.Text = item.ManagerEmail;
+ 
+            };
+
 
             StackLayout stack1 = new StackLayout
             {
                 Children =
                 {
-                    managerIDLabel,
+                    selectionEntry,
+                    IDLabel,
                     nameLabel,
+                    addressLabel,
+                    selectButton,
+
                     //artistManagedLabel,
                 }
             };
