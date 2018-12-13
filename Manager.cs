@@ -15,10 +15,7 @@ namespace CNIT355_Final_Project
         public int ManagerID { get; set; }
 
         [MaxLength(20)]
-        public string ManagerFirst { get; set; }
-
-        [MaxLength(20)]
-        public string ManagerLast { get; set; }
+        public string ManagerName { get; set; }
 
         [MaxLength(2)]
         public string ManagerState { get; set; }

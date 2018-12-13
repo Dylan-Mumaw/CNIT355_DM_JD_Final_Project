@@ -6,33 +6,24 @@ using System.Text;
 using Xamarin.Forms;
 using SQLite;
 
-namespace FpV3
+namespace CNIT355_Final_Project
 {
-    public class AccountCreation : ContentPage
-    {
-        
+	public class AccountCreation : ContentPage
+	{
         protected SQLiteConnection myDatabase;
         StackLayout currentStack;
-
+        public Button createButton;
         public AccountCreation()
-        {
+		{
             myDatabase = DependencyService.Get<IDatabase>().ConnectToDB();
-
+            myDatabase.CreateTable<User>();
             //NEW USER INFO ENTRY
-            Label userIDLabel = new Label
-            {
-                Text = "Enter ID: "
-            };
-            Entry userIDEntry = new Entry
-            {
-
-            };
             Label firstLabel = new Label
             {
                 Text = "First Name: "
             };
             Entry firstEntry = new Entry
-            {
+            {                
             };
 
             Label lastLabel = new Label
@@ -81,14 +72,6 @@ namespace FpV3
             }
 
             //NEW VENUE INFO - IF VENUE MAKE THIS VISIBLE
-            Label venIDLabel = new Label
-            {
-                Text = "Enter venue ID: "
-            };
-            Entry venIDEntry = new Entry
-            {
-
-            };
             Label venNameLabel = new Label
             {
                 Text = "Venue Name: "
@@ -177,14 +160,6 @@ namespace FpV3
             //END VENUE
 
             //NEW ARTIST INFO - IF ARTIST MAKE THIS VISIBLE
-            Label artIDLabel = new Label
-            {
-                Text = "Enter artist ID: "
-            };
-            Entry artIDEntry = new Entry
-            {
-            
-            };
             Label artNameLabel = new Label
             {
                 Text = "Artist/Group Name: "
@@ -225,6 +200,7 @@ namespace FpV3
             {
             };
 
+            //State DropDownList
             Label artCityLabel = new Label
             {
                 Text = "City: "
@@ -267,13 +243,7 @@ namespace FpV3
             //END ARTIST
 
             //NEW MANAGER INFO - IF MANAGER MAKE THIS VISIBLE
-            Label manIDLabel = new Label
-            {
-                Text = "ID: "
-            };
-            Entry manIDEntry = new Entry
-            {
-            };
+            //State DropDownList
             Label manCityLabel = new Label
             {
                 Text = "City: "
@@ -340,32 +310,30 @@ namespace FpV3
             {
             };
 
-            Button createButton = new Button
+            createButton = new Button
             {
                 Text = "Create Account"
             };
+            
 
-
-            //StackLayout payStack = new StackLayout
-            //{
-            //    Children =
-            //    {
-            //        billLabel,
-            //        billEntry,
-            //        bankLabel,
-            //        bankEntry,
-            //        routingLabel,
-            //        routingEntry,
-            //        accLabel,
-            //        accEntry
-            //    }
-            //};
+            StackLayout payStack = new StackLayout
+            {
+                Children =
+                {
+                    billLabel,
+                    billEntry,
+                    bankLabel,
+                    bankEntry,
+                    routingLabel,
+                    routingEntry,
+                    accLabel,
+                    accEntry
+                }
+            };
             StackLayout userStack = new StackLayout
             {
                 Children =
                 {
-                    userIDLabel,
-                    userIDEntry,
                     firstLabel,
                     firstEntry,
                     lastLabel,
@@ -380,8 +348,7 @@ namespace FpV3
             {
                 Children =
                 {
-                    venIDLabel,
-                    venIDEntry,
+                    payStack,
                     venNameLabel,
                     venNameEntry,
                     venCityLabel,
@@ -391,7 +358,7 @@ namespace FpV3
                     venAddEntry,
                     venZIPLabel,
                     venZIPEntry,
-                    //payStack,
+                    payStack,
                     createButton
                 }
             };
@@ -399,18 +366,17 @@ namespace FpV3
             {
                 Children =
                 {
-                    artIDLabel,
-                    artIDEntry,
+                    payStack,
                     artNameLabel,
                     artNameEntry,
                     artManLabel,
-                    //artManEntry,
-                    //artGenLabel,
-                    //artGenEntry,
-                    //artBioLabel,
-                    //artBioEntry,
-                    //artYearsLabel,
-                    //artYearsEntry,
+                    artManEntry,
+                    artGenLabel,
+                    artGenEntry,
+                    artBioLabel,
+                    artBioEntry,
+                    artYearsLabel,
+                    artYearsEntry,
                     statePicker,
                     artCityLabel,
                     artCityEntry,
@@ -421,8 +387,7 @@ namespace FpV3
                     artEmailLabel,
                     artEmailEntry,
                     artPhoneLabel,
-                    artPhoneEntry,
-                    //payStack,
+                    artPhoneEntry,                    
                     createButton
                 }
             };
@@ -430,30 +395,30 @@ namespace FpV3
             {
                 Children =
                 {
-                    manIDLabel,
-                    manIDEntry,
+                    payStack,
+                    statePicker,
                     manCityLabel,
                     manCityEntry,
-                    statePicker,
                     manAddLabel,
                     manAddEntry,
                     manZIPLabel,
                     manZIPEntry,
                     manEmailLabel,
                     manEmailEntry,
-                    //payStack,
                     createButton
                 }
             };
-
+            
 
             StackLayout mainStack = new StackLayout
             {
                 Children =
                 {
-                    userStack,
+                    userStack,                   
                 }
             };
+
+            //var newUser = new User { FirstName = firstEntry.Text.ToString(), LastName = lastEntry.Text.ToString(), Username = userEntry.Text.ToString(), Type = typePicker.SelectedItem.ToString() };
             newUserButton.Clicked += (sender, args) =>
             {
                 Validate();
@@ -476,111 +441,73 @@ namespace FpV3
                     if (typePicker.SelectedItem.ToString() == "Manager")
                     {
                         currentStack = manStack;
-                        mainStack.Children.Add(manStack);   
+                        mainStack.Children.Add(manStack);
                     }
                     if (typePicker.SelectedItem.ToString() == "Artist")
                     {
                         currentStack = artStack;
                         mainStack.Children.Add(artStack);
                     }
-               
-                    User newUser = new User();
 
-                    newUser.UserID = Convert.ToInt32(userIDEntry.Text);
-                    newUser.Username = userEntry.Text;
+                    User newUser = new User(); newUser.Username = userEntry.Text;
                     newUser.FirstName = firstEntry.Text;
                     newUser.LastName = lastEntry.Text;
                     newUser.Type = typePicker.SelectedItem.ToString();
                     myDatabase.Insert(newUser);
-
-                    if (newUser.UserID != 0)
-                    {
-                        myDatabase.Update(newUser);
-                    }
-                    else
-                    {
-                        myDatabase.Insert(newUser);
-                    }
-                    DisplayAlert("Insert successful", "Insert Successful", "Ok");
-                    DisplayAlert("Thanks!", "Please fill out the following fields", "OK");
+                    DisplayAlert("Thanks!", "Please fill out the following fields", "OK");                    
                     return true;
                 }
             };
+
 
             createButton.Clicked += (sender, args) =>
             {
                 if (typePicker.SelectedItem.ToString() == "Venue")
                 {
                     Venue newVenue = new Venue();
-
                     newVenue.VenueName = venNameEntry.Text;
                     newVenue.VenueAddress = venAddEntry.Text;
-                    newVenue.VenueCity = venCityEntry.Text;
-                    //newVenue.VenueState = statePicker.SelectedItem.ToString();
+                    newVenue.VenueCity = venCityEntry.Text;                
+                    newVenue.VenueState = statePicker.SelectedItem.ToString();
                     newVenue.VenueZIP = venZIPEntry.Text;
-
-                    if (newVenue.VenueID != 0)
-                    {
-                        myDatabase.Update(newVenue);
-                    }
-                    else
-                    {
-                        myDatabase.Insert(newVenue);
-                    }
-
+                    myDatabase.Insert(newVenue);
                     DisplayAlert("Insert", "Insert into venue", "ok");
                 }
-                else if (typePicker.SelectedItem.ToString() == "Artist")
+                else if(typePicker.SelectedItem.ToString() == "Artist")
                 {
                     Artist newArtist = new Artist();
-
                     newArtist.ArtistName = artNameEntry.Text;
+                    newArtist.ArtistGenre = artGenEntry.Text;
+                    newArtist.ArtistBio = artBioEntry.Text;
+                    newArtist.YearsActive = artYearsEntry.Text;
                     newArtist.ArtistAddress = artAddEntry.Text;
                     newArtist.ArtistCity = artCityEntry.Text;
-                    //newArtist.ArtistState = statePicker.SelectedItem.ToString();
+                    newArtist.ArtistState = statePicker.SelectedItem.ToString();
                     newArtist.ArtistZIP = artZIPEntry.Text;
-
-                    if (newArtist.ArtistID != 0)
-                    {
-                        myDatabase.Update(newArtist);
-                    }
-                    else
-                    {
-                        myDatabase.Insert(newArtist);
-                    }
-                    DisplayAlert("Insert", "Inserted into artist", "ok");
+                    myDatabase.Insert(newArtist);
+                    DisplayAlert("Insert", "Insert into artist", "ok");
                 }
-                else if (typePicker.SelectedItem.ToString() == "Manager")
+                else if(typePicker.SelectedItem.ToString() == "Manager")
                 {
-                    var newManager1 = new Manager();
-
-                    newManager1.ManagerID = Convert.ToInt32(manIDEntry.Text);
-                    newManager1.ManagerName = firstEntry.Text + lastEntry.Text;
-                    newManager1.ManagerAddress = manAddEntry.Text;
-                    newManager1.ManagerCity = manCityEntry.Text;
-                   // newManager1.ManagerState = statePicker.SelectedItem.ToString();
-                    newManager1.ManagerZIP = manZIPEntry.Text;
-                    newManager1.ManagerEmail = manEmailEntry.Text;
-
-
-                    if (newManager1.ManagerID != 0)
-                        {
-                            myDatabase.Update(newManager1);
-                        }
-                        else
-                        {
-                            myDatabase.Insert(newManager1);
-                        }
-                    DisplayAlert("Insert", "Inserted into manager", "ok");
+                    Manager newManager = new Manager();
+                    newManager.ManagerName = firstEntry.Text + lastEntry.Text;
+                    newManager.ManagerAddress = manAddEntry.Text;
+                    newManager.ManagerCity = manCityEntry.Text;
+                    newManager.ManagerState = statePicker.SelectedItem.ToString();
+                    newManager.ManagerZIP = manZIPEntry.Text;
+                    myDatabase.Insert(newManager);
+                    DisplayAlert("Insert", "Insert into manager", "ok");
+                    manCityLabel.Text = newManager.ManagerCity;
                 }
             };
 
             ScrollView scrollView = new ScrollView
             {
                 VerticalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
                 Content = mainStack
             };
             this.Content = scrollView;
         }
-    }
+	}
 }

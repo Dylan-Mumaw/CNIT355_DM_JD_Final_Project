@@ -9,7 +9,7 @@ using SQLite;
 //using System.ComponentModel;
 //using System.Runtime.CompilerServices;
 
-namespace FpV3
+namespace CNIT355_Final_Project
 {
     public class ArtistInfoPage : ContentPage
     {
@@ -17,24 +17,26 @@ namespace FpV3
         public ArtistInfoPage()
         {
             myDatabase = DependencyService.Get<IDatabase>().ConnectToDB();
+            //myDatabase.DropTable<Artist>();
+            myDatabase.CreateTable<Artist>();
+            //change this and include an if statement so if table exist just skip re-creating this. 
 
-            var artist1 = new Artist { ArtistID = 1, ArtistName = "Bob", ArtistGenre = "Paint" }; //add rest of variables for artist
+            var artist1 = new Artist { ArtistID = 1, ArtistName = "Bob", ArtistGenre = "Paint" }; //hard coding in Artist for demo purposes
+            var artist2 = new Artist { ArtistID = 2, ArtistName = "Jimmi", ArtistGenre = "Rock" }; //hard coding in Artist for demo purposes
 
-            myDatabase.Insert(artist1);
+           myDatabase.Insert(artist1);
+           myDatabase.Insert(artist2);
+            //myDatabase.Update(artist2);
 
             Label artistIDLabel = new Label
             {
-                FontSize = 30,
+
             };
             Label nameLabel = new Label
             {
-                FontSize = 30,
+
             };
             Label genreLabel = new Label
-            {
-                FontSize = 30,
-            };
-            Label addressLabel = new Label
             {
 
             };
@@ -52,10 +54,14 @@ namespace FpV3
 
             selectButton.Clicked += (sendernav, args) =>
             {
-                var item = (myDatabase.Get<Artist>(selectionEntry.Text));
-                artistIDLabel.Text = item.ArtistID.ToString();
-                nameLabel.Text = item.ArtistName;
-                addressLabel.Text = item.ArtistAddress + " " + item.ArtistCity + " " + item.ArtistZIP;
+                var selectItem = myDatabase.Query<Artist>("SELECT ArtistID, ArtistName FROM Artist WHERE ArtistID =  " + "'" + selectionEntry.Text + "'");
+                //sets labels for display purposes
+ 
+                artistIDLabel.Text = selectItem.First().ArtistID.ToString();
+     
+                nameLabel.Text = selectItem.First().ArtistName;
+
+                genreLabel.Text = selectItem.First().ArtistGenre;
             };
 
             StackLayout stack1 = new StackLayout

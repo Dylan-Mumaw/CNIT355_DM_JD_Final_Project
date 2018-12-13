@@ -19,12 +19,18 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Artist.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ArtistInfoPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Events.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IDatabase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LoginPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Manager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ManagerInfoPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Profile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TabPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)User.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Venue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VenueInfoPage.cs" />
   </ItemGroup>
 </Project>

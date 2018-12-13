@@ -6,7 +6,7 @@ using System.Text;
 using Xamarin.Forms;
 using SQLite;
 
-namespace FpV3
+namespace CNIT355_Final_Project
 {
     public class VenueInfoPage : ContentPage
     {
@@ -14,53 +14,38 @@ namespace FpV3
         public VenueInfoPage()
         {
             myDatabase = DependencyService.Get<IDatabase>().ConnectToDB();
+            myDatabase.CreateTable<Venue>();
 
-            var venue1 = new Venue { VenueID = 1, VenueName = "Concord Music Hall", VenueCity = "Chicago" }; 
+            var venue1 = new Venue { VenueID = 1, VenueName = "Concord Music Hall", VenueCity = "Chicago" };
 
-            myDatabase.Insert(venue1); 
+            myDatabase.Insert(venue1); //manually inserting records into the venue table thru the venue1 object
 
-            Entry selectionEntry = new Entry
-            {
-                Placeholder = "Enter ID here"
-            };
-            Button selectButton = new Button
-            {
-                Text = "Select Venue",
-                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Button)),
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Fill
-            };
+            var firstItem = myDatabase.Query<Venue>("SELECT * FROM Venue WHERE VenueID = 1 "); //selecting the first venueID to show write/read ability 
 
             Label venueIDLabel = new Label
             {
-                FontSize = 30,
+
             };
             Label nameLabel = new Label
             {
-                FontSize = 30,
+
             };
             Label locationLabel = new Label
             {
-                FontSize = 30,
+
             };
 
-            selectButton.Clicked += (sendernav, args) =>
-            {
-                var item = (myDatabase.Get<Venue>(selectionEntry.Text));
-                venueIDLabel.Text = item.VenueID.ToString();
-                nameLabel.Text = item.VenueName;
-                locationLabel.Text = item.VenueAddress + " " + item.VenueCity + " " + item.VenueZIP;
-            };
+            venueIDLabel.Text = firstItem.First().VenueID.ToString();
+            nameLabel.Text = firstItem.First().VenueName;
+            locationLabel.Text = firstItem.First().VenueCity;
 
             StackLayout stack1 = new StackLayout
             {
                 Children =
                 {
-                    selectionEntry,
                     venueIDLabel,
                     nameLabel,
                     locationLabel,
-                    selectButton
                 }
             };
             this.Content = stack1;

@@ -14,6 +14,7 @@ namespace CNIT355_Final_Project
             this.Title = "TabbedPage";
             this.Children.Add(new LoginPage() { Title = "Login" });
             this.Children.Add(new ArtistInfoPage() { Title = "Artist Information" });
+            this.Children.Add(new VenueInfoPage() { Title = "Venue Information" });
         }
     }
 }
